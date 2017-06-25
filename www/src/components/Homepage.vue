@@ -1,5 +1,6 @@
 <template>
   <div class="homepage">
+    <navbar></navbar>
     <div class="row">
       <div class="col-12">
         <img src="http://i.imgur.com/gnWr1ON.png" class="float-left" style="width: 300px">
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+import Navbar from './Navbar'
 import Login from './Login'
 
 export default {
@@ -47,6 +49,9 @@ export default {
     return {
       msg: 'Welcome to ChoreWars'
     }
+  },
+   components: {
+    Navbar
   }
 }
 </script>
@@ -85,7 +90,7 @@ h1 {
 .open>.dropdown-toggle.btn-primary {
     background: #7c7c7e;
 }
-    
+
 .btn-primary:active,
 .btn-primary.active {
     background: #5a6ed0;
