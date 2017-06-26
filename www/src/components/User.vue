@@ -1,29 +1,56 @@
 <template>
     <div class="user">
-        <h3>Household: {{activeHousehold.name}}</h3>
-        <h4>User: {{user.name}}</h4>
-        <h5>Points: {{this.addUpUserPoints}}</h5>
-
-        <hr>
-        <h6>Chores to Complete:</h6>
-        <ul>
-            <li v-for='chore in this.choresList'>{{chore.name}}
-                <button class="delete" @click="updateUserCompletedChore(chore)">X</button>
-            </li>
-        </ul>
-        <h6>Completed:</h6>
-        <ul>
-            <span v-for='chore in this.choresLog'>
-                <li v-if="chore.completedBy == user._id">{{chore.name}}</li>
-            </span>
-            <!--<span v-for='chore in this.user.completedChores'>{{chore.name}}</span>-->
-        </ul>
-        <router-link :to="'/households/'+activeHousehold._id">Back to Household</router-link>
+        <navbar></navbar>
+        <div class="row justify-content-sm-center">
+            <div class="col-12 text-center">
+                <h1 class="text-center">{{activeHousehold.name}}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h4>User:
+                    <span class="membername">{{user.name}}</span>
+                    <span class="memberpoints">{{this.addUpUserPoints}}</span>
+                </h4>
+                <button class="pull-right logout" @click="logout(user)">Logout</button>
+            </div>
+        </div>
+        <div class="row justify-content-sm-center">
+            <div class="col-4">
+                <h3 class="chores">Chores to Complete:</h3>
+                <div v-for='chore in this.choresList'>{{chore.name}}
+                    <button class="done" @click="updateUserCompletedChore(chore)">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    </button>
+                    <hr>
+                </div>
+    
+            </div>
+            <div class="col-4">
+                <h3 class="completed">Chores Completed:</h3>
+                <ul id="double">
+                    <span v-for='chore in this.choresLog'>
+                        <li v-if="chore.completedBy == user._id">{{chore.name}}</li>
+                    </span>
+                </ul>
+            </div>
+        </div>
+        <div class="row justify-content-sm-center">
+            <div class="return">
+                <div class="col-12 text-center">
+                    <center>
+                        <router-link :to="'/households/'+activeHousehold._id">Back to Household</router-link>
+                        <br>
+                    </center>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 
 <script>
+import Navbar from '@/components/Navbar'
 export default {
     name: 'user',
 
@@ -48,10 +75,10 @@ export default {
         completedChores() {
             return this.$store.state.activeHousehold.completedChores
         },
-        choresLog(){
+        choresLog() {
             return this.$store.state.activeHousehold.choreLog
         },
-         addUpUserPoints() {
+        addUpUserPoints() {
             let userPoints = 0;
             let completedChores = this.$store.state.allCompletedChores
             for (var i = 0; i < completedChores.length; i++) {
@@ -84,13 +111,102 @@ export default {
         },
         getAllUserChores() {
             this.$store.dispatch('getUserChores', this.user._id)
+        },
+        logout() {
+            this.$store.dispatch('logout', this.user)
         }
     },
-    components: {}
+    components: {
+        Navbar
+    }
 }
 </script>
 
 
-<style>
+<style scoped>
+.membername {
+    font-size: 25px;
+    padding-left: 20px;
+    line-height: 35px;
+    padding-bottom: 5px;
+}
 
+.memberpoints {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #000;
+    line-height: 20px;
+    text-align: center;
+    background: #5cb85c;
+    padding: 10px;
+}
+
+.chores,
+.completed {
+    padding-top: 20px;
+}
+
+ul {
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
+li {
+    line-height: 1.5em;
+    float: left;
+    display: inline;
+}
+
+#double li {
+    width: 50%;
+}
+
+.return {
+    margin-top: 30px;
+}
+
+a {
+    color: #443f3f;
+}
+
+.done {
+    font-size: 16px;
+    color: #000;
+    font-family: helvetica;
+    background-color: #d9d7d7;
+    border-radius: 10px;
+    border: 0px;
+    padding: 5px;
+    transition-duration: 0.4s;
+    height: 30px;
+}
+
+.done:hover {
+    background-color: #5cb85c;
+}
+
+hr {
+    border: 0px solid #fff;
+}
+
+button.logout {
+    font-size: 18px;
+    color: #000;
+    font-weight: bold;
+    font-family: helvetica;
+    background-color: #a09a9a;
+    border-radius: 5px;
+    border: 0px;
+    padding: 8px;
+    margin-bottom: 5px;
+    transition-duration: 0.4s;
+    margin-right: 200px;
+}
+
+button.logout:hover {
+    background-color: #fff;
+    color: #251f1f;
+}
 </style>

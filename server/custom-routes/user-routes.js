@@ -4,18 +4,39 @@ let Users = require('../models/user')
 
 export default {
   household: {
-    path: '/households',
+    path: '/gethouseholds',
     reqType: 'get',
     method(req, res, next) {
+        // debugger
       let action = 'Get Household Information'
-      Household.find({ creatorId: req.session.uid })
+      Household.find({ members: { $in: [req.session.uid] } })
         .then(household => {
-          res.send(handleResponse(action, household))
+        // //  debugger
+        //   Household.find()
+        //     .then(houses => {
+        //      // debugger
+        //       household.push(houses)
+              res.send(handleResponse(action, household))
+            // }).catch(error => {
+            //   return next(handleResponse(action, null, error))
+            //})
         }).catch(error => {
           return next(handleResponse(action, null, error))
         })
     }
   },
+  //   sharedhouseholds: {
+  //   path: '/allhouseholds',
+  //   reqType: 'get',
+  //   method(req, res, next){
+  //     Household.find({members: { $in: req.session.uid}})
+  //       .then(households => {
+  //         res.send(handleResponse(action, households))
+  //       }).catch(error => {
+  //         return next(handleResponse(action, null, error))
+  //       })
+  //   }
+  // },
   findUsersByName: {
     path: '/findUsers',
     reqType: 'post',
@@ -228,14 +249,14 @@ export default {
     method(req, res, next) {
       debugger
       let action = 'Delete Household'
-      Household.findByIdAndRemove(req.body._id )
+      Household.findByIdAndRemove(req.body._id)
         .then(household => {
           debugger
-            res.send(handleResponse(action, "household has been deleted"))
-          })
-            .catch(error => {
-              return next(handleResponse(action, null, error))
-            })
+          res.send(handleResponse(action, "household has been deleted"))
+        })
+        .catch(error => {
+          return next(handleResponse(action, null, error))
+        })
     }
   }
 

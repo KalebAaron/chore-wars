@@ -1,16 +1,12 @@
 <template>
   <div class="navbar">
-    <nav class="navbar navbar-light">
-      <h1 class="navbar-brand mb-0"><img src="http://i.imgur.com/3Sa4hvL.png" style="width: 75px" class="img-responsive float-left"></h1>
-      <span class="navbar-text">
-        <h1 v-if="activeHousehold.name" class="text-center">{{activeHousehold.name}}</h1>
-        <h1 v-else>Welcome to Chore Wars!</h1>
-        </span>
-        <form @submit.prevent="logout(user)">
-          <button type="submit" class="btn btn-outline-danger float-right">Logout</button>
-        </form>
-    </nav>
-
+    <div class="row">
+      <div class="col-12">
+        <center>
+          <img src="http://i.imgur.com/V8xAS9b.jpg" class="img-fluid">
+        </center>
+      </div>
+    </div>
   </div>
 </template>
 

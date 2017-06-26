@@ -1,51 +1,40 @@
 <template>
   <div class="start">
-    <!-- <navbar></navbar> -->
-    <div class="container-fluid">
-      <div id='myHouseholds'>
-        <div class="row">
-          <div class="col-12">
-            <h2 class="float-left">Your Households:</h2>
-          </div>
-        </div>
-        <div class='row'>
-          <div class="col-sm-6" v-for="household in households">
-            <h6>
-              <router-link :to="'/households/'+household._id">
-                <button class="household">
-                  <i class="fa fa-home" aria-hidden="true"></i>
-                  {{household.name}}</button>
-              </router-link>
-            </h6>
-          </div>
+    <navbar></navbar>
+    <div class='myhouseholds'>
+      <div class="row">
+        <div class="col-12">
+          <h2 class="float-left">Your Households:</h2>
         </div>
       </div>
+      <div class="row justify-content-sm-center">
+        <div class="col-5" v-for="household in households">
+            <router-link :to="'/households/'+household._id">
+              <button class="household">
+                <i class="fa fa-home" aria-hidden="true"></i>
+                {{household.name}}</button>
+            </router-link>
+        </div>
+        <h3 v-if="households[0] == null">You have not created or joined any households yet.</h3>
+      </div>
+    </div>
+    <div class="row">
       <div class="add">
-        <div class="row">
-          <div class="col-12">
-            <h2 class="float-left">Add a household:</h2>
-          </div>
+        <div class="col-12">
+          <h2 class="float-left">Add a household:</h2>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <form class="form-inline" @submit.prevent="createHousehold">
-              <div class="col-12 col-sm-6">
-                <input type="text" class="form-control" v-model="name" name="name" placeholder="Household Name" /> &nbsp;
-              </div>
-              <div class="col-12 col-sm-6">
-                <button type="submit" class="btn btn-primary create" @click="householdFormToggleBack">Create New Household</button>
-              </div>
-            </form>
+      </div>
+    </div>
+    <div class="row justify-content-sm-center">
+      <div class="col-10">
+        <form class="form-inline" @submit.prevent="createHousehold">
+          <div class="col-12 col-sm-6">
+            <input type="text" class="form-control" v-model="name" name="name" placeholder="Household Name or Street Number and Address"> &nbsp;
           </div>
-        </div>
-
-        <!--<button type="button" class='btn btn-primary' @click="householdFormToggle" v-show="addHouseholdButton">Add a Household</button>
-                    <form class="form-inline create-household-form" @submit.prevent="createHousehold" v-show="newHousehold">
-                      <div class="form-group">
-                        <input type="text" class="form-control" v-model="name" name="name" placeholder="Household Name" />
-                        <button type="submit" class="btn btn-primary" id="create-household-button" @click="householdFormToggleBack">Create New Household</button>
-                      </div>
-                    </form> -->
+          <div class="col-12 col-sm-6">
+            <button type="submit" class="btn btn-primary create">Create a New Household</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -61,7 +50,7 @@ export default {
       name: '',
       creatorId: this.$store.state.user._id,
       newHousehold: false,
-      addHouseholdButton: true
+      addHouseholdButton: true,
     }
   },
   mounted() {
@@ -82,14 +71,6 @@ export default {
     },
     addHouseholdIdToUser() {
       this.$store.dispatch('addHouseholdIdToUser', { user: this.user, householdId: this.$store.state.activeHousehold._id })
-    },
-    householdFormToggle() {
-      this.newHousehold = true;
-      this.addHouseholdButton = false;
-    },
-    householdFormToggleBack() {
-      this.newHousehold = false;
-      this.addHouseholdButton = true;
     }
   },
   components: {
@@ -103,22 +84,19 @@ export default {
 
 <style scoped>
 h2 {
-  font-weight: bold;
-  font-family: Fjalla One;
-  text-transform: uppercase;
-  color: #247BA0;
+  color: #251f1f;
+  padding-left: 50px;
 }
-
-.add {
-  margin-top: 30px;
+h3 {
+  font-size: 22px;
 }
 
 button.household {
   font-size: 25px;
-  color: #FF1654;
+  color: #fff;
   font-weight: bold;
   font-family: helvetica;
-  background-color: #fff;
+  background-color: #a09a9a;
   border-radius: 5px;
   border: 0px;
   padding: 10px;
@@ -128,16 +106,16 @@ button.household {
 }
 
 button.household:hover {
-  background-color: #FF1654;
-  color: #fff;
+  background-color: #d9d7d7;
+  color: #251f1f;
 }
 
 button.create {
   font-size: 18px;
-  color: #fff;
+  color: #251f1f;
   font-weight: bold;
   font-family: helvetica;
-  background-color: #FF1654;
+  background-color: #d9d7d7;
   border-radius: 5px;
   border: 0px;
   padding: 10px;
@@ -147,13 +125,25 @@ button.create {
 }
 
 button.create:hover {
-  background-color: #fff;
-  color: #FF1654;
+  background-color: #a09a9a;
+  color: #fff;
 }
 
 input[type=text] {
   width: 100%;
   height: 43px;
   float: left;
+}
+
+.myhouseholds {
+  background-color: #fff;
+  width: 100%;
+  padding: 40px;
+}
+.add {
+  background-color: #fff;
+  width: 100%;
+  padding: 40px;
+  padding-bottom: 5px;
 }
 </style>
